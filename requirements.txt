@@ -1,6 +1,5 @@
 sklearn==0.0
 pandas==0.24.2
-querystring-parser==1.2.4
 ray==2.0.0
 fastapi==0.85.0
 uvicorn==0.16.0
