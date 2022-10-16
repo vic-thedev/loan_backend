@@ -1,6 +1,5 @@
 sklearn==0.0
 pandas==0.24.2
-lightgbm==3.3.2
 lime==0.2.0.1
 querystring-parser==1.2.4
 ray==2.0.0
