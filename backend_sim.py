@@ -9,7 +9,7 @@ from ray import serve
 
 app = FastAPI()
 
-placebo = pd.read_csv('default_value.csv')
+placebo = pd.read_csv('default_value_ultimate.csv')
 placebo = np.array(placebo).reshape(1,-1)
 
 
@@ -37,7 +37,7 @@ class BoostingModel:
 if __name__ == "__main__":
 
     # Chargement du modele
-    model = joblib.load('themodel.modele')
+    model = joblib.load('ultimate_model.modele')
     placebo_result = model.predict(placebo)
 
     # Données génériques
