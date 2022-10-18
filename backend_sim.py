@@ -10,7 +10,7 @@ from ray import serve
 app = FastAPI()
 
 placebo = pd.read_csv('default_value_ultimate.csv')
-placebo = np.array(placebo).reshape(1,-1)
+placebo = np.array(placebo).reshape(1, -1)
 
 
 @serve.deployment(route_prefix="/loan")
@@ -20,7 +20,7 @@ class BoostingModel:
         self.model = model
 
     @app.get("/")
-    async def root(self,request : Request):
+    async def root(self, request: Request):
         payload = await request.json()
         print(payload)
         prediction = self.model.predict(np.array(payload["vector"]).reshape(1, -1))[0]
@@ -35,7 +35,6 @@ class BoostingModel:
 
 
 if __name__ == "__main__":
-
     # Chargement du modele
     model = joblib.load('ultimate_model.modele')
     placebo_result = model.predict(placebo)
@@ -43,4 +42,4 @@ if __name__ == "__main__":
     # Données génériques
     sample_request_input = {"vector": placebo.tolist()}
     req_imp_json = json.dumps(sample_request_input)
-    serve.run(BoostingModel.bind(model))
+    serve.run(BoostingModel.bind(model), port=80)
