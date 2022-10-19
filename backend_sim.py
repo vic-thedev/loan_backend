@@ -14,7 +14,7 @@ placebo = pd.read_csv('default_value_ultimate.csv')
 placebo = np.array(placebo).reshape(1, -1)
 
 
-@serve.deployment(route_prefix="/loan")
+#@serve.deployment(route_prefix="/loan")
 @serve.ingress(app)
 class BoostingModel:
     def __init__(self, model):
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     # Données génériques
     sample_request_input = {"vector": placebo.tolist()}
     req_imp_json = json.dumps(sample_request_input)
-    serve.run(BoostingModel.bind(model), port=8000)
+    serve.run(BoostingModel.bind(model), port=8080)
     #exemple de plus simplke
     '''from fastapi import FastAPI, Depends
     from ray.serve.http_adapters import json_to_ndarray
