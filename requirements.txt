@@ -1,6 +1,5 @@
 pandas
 numpy
-json
 ray==2.0.0
 fastapi
 uvicorn==0.16.0
