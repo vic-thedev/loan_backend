@@ -6,4 +6,5 @@ uvicorn==0.16.0
 joblib
 requests-oauthlib
 requests
+lightgbm
 
