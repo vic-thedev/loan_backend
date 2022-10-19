@@ -21,6 +21,10 @@ class BoostingModel:
         self.model = model
 
     @app.get("/")
+    async def root(self):
+        return {"result": "Hello worl!"}
+
+    @app.get("/loan")
     async def root(self, request: Request):
         payload = await request.json()
         print(payload)
