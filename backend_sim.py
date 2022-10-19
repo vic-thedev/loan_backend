@@ -4,7 +4,8 @@ import requests
 import pandas as pd
 import json
 import joblib
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request , Depends
+from ray.serve.http_adapters import json_to_ndarray
 from ray import serve
 
 app = FastAPI()
@@ -42,4 +43,13 @@ if __name__ == "__main__":
     # Données génériques
     sample_request_input = {"vector": placebo.tolist()}
     req_imp_json = json.dumps(sample_request_input)
-    serve.run(BoostingModel.bind(model))
+    serve.run(BoostingModel.bind(model), port=80)
+    #exemple de plus simplke
+    '''from fastapi import FastAPI, Depends
+    from ray.serve.http_adapters import json_to_ndarray
+
+    app = FastAPI()
+
+    @app.post("/endpoint")
+    async def endpoint(np_array = Depends(json_to_ndarray)):
+        ...'''
