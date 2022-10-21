@@ -40,7 +40,7 @@ async def root(features: Request):
     #payload =  Depends(json_to_ndarray)
     print(payload)
     prediction = model.predict(np.array(payload["vector"]).reshape(1, -1))[0]
-    human_name = {0: "refused", 1: "accepted"}
+    human_name = {0: "Pas de difficulté particulière à rembourser le prêt", 1: "Fort risque de nom remboursement du prêt"}
     return {"result": human_name[prediction]}
 
 @app.post("/sub")
