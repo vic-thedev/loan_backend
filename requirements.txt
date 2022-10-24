@@ -7,4 +7,6 @@ joblib
 requests-oauthlib
 requests
 lightgbm
+lime
+dill
 
