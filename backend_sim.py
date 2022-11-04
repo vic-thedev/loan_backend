@@ -17,33 +17,22 @@ app = FastAPI()
 
 #############Initialisation explicabilité avec lime################
 #Explainer initialisation
-explainer = pickle.load(open('explainer07.pkl', 'rb'))
-most_imp = ['APPS_EXT_SOURCE_MEAN',
-'CREDIT_TO_GOODS_RATIO',
-'INCOME_TO_EMPLOYED_RATIO',
-'PAYMENT_RATE',
-'NAME_EDUCATION_TYPE',
-'CODE_GENDER',
-'EXT_SOURCE_3',
-'EXT_SOURCE_2',
-'APPS_EXT_SOURCE_STD',
-'AMT_CREDIT',
-'AMT_ANNUITY',
-'APP_EXT_SOURCE_2*EXT_SOURCE_3*DAYS_BIRTH',
-'FLAG_DOCUMENT_3',
-'DAYS_EMPLOYED',
-'DAYS_ID_PUBLISH',
-'DAYS_LAST_PHONE_CHANGE',
-'INCOME_TO_BIRTH_RATIO',
-'CAR_TO_EMPLOYED_RATIO',
-'ANNUITY_INCOME_PERC',
-'DAYS_BIRTH']
+explainer = pickle.load(open('explainer777.pkl', 'rb'))
+most_imp = ['AMT_CREDIT', 'AMT_ANNUITY', 'AMT_GOODS_PRICE',
+'REGION_POPULATION_RELATIVE', 'DAYS_BIRTH', 'DAYS_REGISTRATION',
+'DAYS_ID_PUBLISH', 'EXT_SOURCE_1', 'EXT_SOURCE_2', 'EXT_SOURCE_3',
+'LIVINGAREA_AVG', 'DAYS_LAST_PHONE_CHANGE', 'INCOME_CREDIT_PERC',
+'INCOME_PER_PERSON', 'ANNUITY_INCOME_PERC', 'PAYMENT_RATE',
+'DAYS_EMPLOYED_PERC', 'APPS_EXT_SOURCE_MEAN', 'APPS_EXT_SOURCE_STD',
+'APP_EXT_SOURCE_2*EXT_SOURCE_3*DAYS_BIRTH', 'CREDIT_TO_GOODS_RATIO',
+'INCOME_TO_EMPLOYED_RATIO', 'INCOME_TO_BIRTH_RATIO',
+'ID_TO_BIRTH_RATIO', 'CAR_TO_BIRTH_RATIO']
 
 
 #if __name__ == "__main__":
 # Chargement du modele
-model = joblib.load('ultimate_model.modele')
-placebo = pd.read_csv('default_value_ultimate.csv')
+model = joblib.load('ultimate_model_f777.modele')
+placebo = pd.read_csv('default_value777.csv')
 placebo = np.array(placebo).reshape(1, -1)
 placebo_result = model.predict(placebo)
 
@@ -66,13 +55,13 @@ class BoostingModel:
 
 @app.get("/loan")
 async def root(features: Request):
+    print('load request received')
     payload = await features.json()
     #payload =  Depends(json_to_ndarray)
     print(payload)
     prediction = model.predict(np.array(payload["vector"]).reshape(1, -1))[0]
     human_name = {0: "Pas de difficulté particulière à rembourser le prêt", 1: "Fort risque de nom remboursement du prêt"}
     return {"result": human_name[prediction]}
-
 
 @app.post("/lime")
 async def root(features: Request):
@@ -81,8 +70,6 @@ async def root(features: Request):
     print(payload)
     borrower = pd.Series(payload["newclient"])
     print(borrower)
-    #case = pd.Series(dict(zip(most_imp, borrower[0])))
-    #print(case)
     predict_fn = lambda x: model.predict_proba(x).astype(float)
     exp = explainer.explain_instance(borrower, predict_fn, num_features=20)
     exp_html= exp.as_html()
