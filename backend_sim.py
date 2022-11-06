@@ -60,8 +60,9 @@ async def root(features: Request):
     #payload =  Depends(json_to_ndarray)
     print(payload)
     prediction = model.predict(np.array(payload["vector"]).reshape(1, -1))[0]
+    pb = model.predict_proba(np.array(payload["vector"]))[:,1]
     human_name = {0: "Pas de difficulté particulière à rembourser le prêt", 1: "Fort risque de nom remboursement du prêt"}
-    return {"result": human_name[prediction]}
+    return {"result": f"{human_name[prediction]}. Voici votre score : {pb}"}
 
 @app.post("/lime")
 async def root(features: Request):
