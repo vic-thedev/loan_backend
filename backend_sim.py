@@ -60,7 +60,8 @@ async def root(features: Request):
     #payload =  Depends(json_to_ndarray)
     print(payload)
     prediction = model.predict(np.array(payload["vector"]).reshape(1, -1))[0]
-    pb = model.predict_proba(np.array(payload["vector"]))[1]
+    pb = model.predict_proba(np.array(payload["vector"]).reshape(1, -1))[0][1]
+    print(pb)
     human_name = {0: "Pas de difficulté particulière à rembourser le prêt", 1: "Fort risque de nom remboursement du prêt"}
     return {"result": f"{human_name[prediction]}. Voici votre score : {pb}"}
 
